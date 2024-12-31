@@ -1,16 +1,22 @@
-import React from "react";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
-const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // Base URL from your environment variables
-  withCredentials: true, // Send cookies with requests if needed
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-const getApi = async (endpoint: string, config?: AxiosRequestConfig) => {
+const getApi = async (url: string) => {
   try {
-    const response = await apiClient.get(endpoint, config);
+    const response = await axios.get(`${baseUrl}/${url}`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error: any) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error.response?.data || error.message;
+  }
+};
+const postApi = async (url: string, data: any) => {
+  try {
+    const response = await axios.post(`${baseUrl}/${url}`, data, {
+      withCredentials: true,
+    });
     return response;
   } catch (error: any) {
     console.error("API Error:", error.response?.data || error.message);
@@ -18,4 +24,4 @@ const getApi = async (endpoint: string, config?: AxiosRequestConfig) => {
   }
 };
 
-export { getApi };
+export { getApi, postApi };

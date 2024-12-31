@@ -11,19 +11,33 @@ import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/src/store";
+import { loginUser, signupUser } from "@/src/store/slices/authSlice";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const dispatch = useAppDispatch();
+  // const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { loading, isUserAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
 
   const formSchema = authFormSchema(type);
   //   for form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      address: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      dateOfBirth: "",
+      ssn: "",
     },
   });
 
@@ -33,13 +47,25 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       if (type === "sign-up") {
-        // const newUser=await SignUp(data);
-        // setUser(newUser)
+        const payload = {
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
+          email: data.email,
+          password: data.password,
+          address: data.address || "",
+          city: data.city || "",
+          state: data.state || "",
+          postalCode: data.postalCode || "",
+          dateOfBirth: data.dateOfBirth || "",
+          ssn: data.ssn || "",
+        };
+        await dispatch(signupUser(payload));
+        router.push("/sign-in");
       }
       if (type === "sign-in") {
-        // const response=await SignIn({
-        // })
-        // if(response) router.push('/')
+        await dispatch(
+          loginUser({ email: data.email, password: data.password })
+        );
       }
       setIsLoading(false);
     } catch (error) {
@@ -65,16 +91,20 @@ const AuthForm = ({ type }: { type: string }) => {
 
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
-            {user ? "Link Account" : type === "sign-in" ? "Sign In" : "Sign Up"}
+            {isUserAuthenticated
+              ? "Link Account"
+              : type === "sign-in"
+              ? "Sign In"
+              : "Sign Up"}
             <p className="text-16 font-normal text-gray-600">
-              {user
+              {isUserAuthenticated
                 ? "Link your account to get started"
                 : "Please enter your details"}
             </p>
           </h1>
         </div>
       </header>
-      {user ? (
+      {isUserAuthenticated ? (
         <div className="flex flex-col gap-4">{/* {plaid link } */}</div>
       ) : (
         <>

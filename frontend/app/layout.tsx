@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "@/src/store";
+import ReduxProvider from "@/src/store/ReduxProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,13 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Provider store={store}>
+      <ReduxProvider>
         <body
           className={`${inter.variable} ${ibmPlexSerif.variable} antialiased`}
         >
           {children}
         </body>
-      </Provider>
+      </ReduxProvider>
     </html>
   );
 }

@@ -202,8 +202,8 @@ export const authFormSchema = (type: string) =>
       message: "password must be atleast 4 characters",
     }),
 
-    firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
+    firstName: type === "sign-in" ? z.string().optional() : z.string().min(2),
+    lastName: type === "sign-in" ? z.string().optional() : z.string().min(2),
     address: type === "sign-in" ? z.string().optional() : z.string().min(3),
     state: type === "sign-in" ? z.string().optional() : z.string().min(2),
     city: type === "sign-in" ? z.string().optional() : z.string().min(2),
