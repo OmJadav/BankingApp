@@ -5,6 +5,7 @@ import connectDb from './database/dbConnect.js';
 import compression from 'compression';
 import cookieParser from 'cookie-parser'
 import authRoutes from './routes/authRoute.js'
+import userRoutes from './routes/userRoute.js'
 
 dotenv.config();
 connectDb();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)
 // app.get('/', (req, res) => {
 //     return res.send(" <h1>Backend running</h1>")
 // })

@@ -15,11 +15,11 @@ const initialState: UserState = {
   users: null,
 };
 
-export const fetchUsers = createAsyncThunk(
-  "users/fetchUsers",
+export const fetchAllUsers = createAsyncThunk(
+  "users/fetchAllUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await getApi("/auth/users");
+      const data = await getApi("/users/getallusers");
       return data;
     } catch (err: any) {
       return rejectWithValue(err);
