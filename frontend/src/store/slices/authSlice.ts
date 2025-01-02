@@ -120,6 +120,7 @@ export const loginUser =
     try {
       const response = await postApi("auth/login", credentials);
       dispatch(successLogin(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data));
     } catch (err: any) {}
   };
 

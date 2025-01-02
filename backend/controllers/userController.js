@@ -11,7 +11,8 @@ export const getAllUsers = async (req, res, next) => {
 }
 
 export const getUser = async (req, res, next) => {
-    const user = req.user;
-    user.password = undefined;
+    const userid = req.user.userId;
+    // console.log(userid);
+    const user = await User.findOne({ _id: userid })
     res.status(200).json({ user })
 }
